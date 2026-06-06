@@ -1,11 +1,15 @@
 /* ==UserStyle==
 
-@name         More Thumbnails per row [YouTube]
-@description  Adds more thumbnails per row on the home page, subscription page and channel videos section.
-@namespace    https://userstyles.world/user/KryoBit
-@version      1.2.4
-@author       KryoBit
-@license      MIT
+@name           More Thumbnails per row [YouTube]
+@description    Adds more thumbnails per row on the home page, subscription page and channel videos section.
+@namespace      https://userstyles.world/user/KryoBit
+@version        1.2.5
+@author         KryoBit
+@license        MIT
+
+@homepageURL    https://github.com/KryoBit/UserStyles
+@supportURL     https://github.com/KryoBit/UserStyles/issues
+@updateURL      https://raw.githubusercontent.com/KryoBit/UserStyles/refs/heads/main/YouTube/More_Thumbnails_per_row.user.css
 
 @preprocessor stylus
 

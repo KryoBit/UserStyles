@@ -3,9 +3,13 @@
 @name           Modern Scrollbars [Instagram]
 @description    Replaces the ancient scrollbars on Instagram with modern ones
 @namespace      https://userstyles.world/user/KryoBit
-@version        1.2.0
+@version        1.2.1
 @author         KryoBit
 @license        MIT
+
+@homepageURL    https://github.com/KryoBit/UserStyles
+@supportURL     https://github.com/KryoBit/UserStyles/issues
+@updateURL      https://raw.githubusercontent.com/KryoBit/UserStyles/refs/heads/main/Instagram/Modern_Scrollbars.user.css
 
 @preprocessor stylus
 

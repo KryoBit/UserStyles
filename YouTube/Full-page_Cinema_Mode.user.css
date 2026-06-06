@@ -3,9 +3,13 @@
 @name           Full-page Cinema Mode [YouTube]
 @description    Expands the video player further while in Cinema mode
 @namespace      https://userstyles.world/user/KryoBit
-@version        1.4.2
+@version        1.4.3
 @author         KryoBit
 @license        MIT
+
+@homepageURL    https://github.com/KryoBit/UserStyles
+@supportURL     https://github.com/KryoBit/UserStyles/issues
+@updateURL      https://github.com/KryoBit/UserStyles/blob/main/YouTube/Full-page_Cinema_Mode.user.css
 
 @preprocessor stylus
 
