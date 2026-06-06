@@ -1,0 +1,78 @@
+/* ==UserStyle==
+
+@name         More Thumbnails per row [YouTube]
+@description  Adds more thumbnails per row on the home page, subscription page and channel videos section.
+@namespace    https://userstyles.world/user/KryoBit
+@version      1.2.4
+@author       KryoBit
+@license      MIT
+
+@preprocessor stylus
+
+@var checkbox home                      'Homepage' 1
+@var number home_thumbsperrow           '└⎯⎯⎯⟶' [4, 1, 20, 1]
+@var checkbox subs                      'Subscriptions' 1
+@var number subs_thumbsperrow           '└⎯⎯⎯⟶' [4, 1, 20, 1]
+@var checkbox channel                   'Channel videos' 1
+@var number channel_thumbsperrow        '└⎯⎯⎯⟶' [4, 1, 20, 1]
+@var checkbox hideotherhome             'Hide Shorts and News on Homepage to link rows' 1
+@var checkbox hideothersubs             'Hide Shorts on Subscriptions page to link rows' 1
+
+==/UserStyle== */
+
+@-moz-document domain("www.youtube.com") {
+
+    if home {
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="home"] ytd-rich-grid-renderer {
+            --ytd-rich-grid-items-per-row: home_thumbsperrow !important;
+        }
+
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="home"] ytd-rich-item-renderer[rendered-from-rich-grid] {
+            margin-left: calc(var(--ytd-rich-grid-item-margin)/2) !important;
+            margin-right: calc(var(--ytd-rich-grid-item-margin)/2) !important;
+        }
+    }
+
+    if subs {
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="subscriptions"] ytd-rich-grid-renderer {
+            --ytd-rich-grid-items-per-row: subs_thumbsperrow !important;
+        }
+
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="subscriptions"] ytd-rich-item-renderer[rendered-from-rich-grid] {
+            margin-left: calc(var(--ytd-rich-grid-item-margin)/2) !important;
+            margin-right: calc(var(--ytd-rich-grid-item-margin)/2) !important;
+        }
+    }
+
+    if channel {
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="channels"] ytd-rich-grid-renderer {
+            --ytd-rich-grid-items-per-row: channel_thumbsperrow !important;
+        }
+
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="channels"] ytd-rich-item-renderer[rendered-from-rich-grid] {
+            margin-left: calc(var(--ytd-rich-grid-item-margin)/2) !important;
+            margin-right: calc(var(--ytd-rich-grid-item-margin)/2) !important;
+        }
+
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="channels"] #contents.ytd-rich-grid-renderer {
+            margin-left: 0px !important;
+            margin-right: var(--ytd-rich-grid-item-margin) !important;
+        }
+    }
+
+    if hideotherhome {
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="home"] ytd-rich-section-renderer.ytd-rich-grid-renderer {
+            display: none !important;
+        }
+    }
+
+    if hideothersubs {
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="subscriptions"] ytd-rich-section-renderer.ytd-rich-grid-renderer.style-scope:nth-of-type(1) {
+            display: flex !important;
+        }
+
+        ytd-browse.style-scope.ytd-page-manager[page-subtype="subscriptions"] ytd-rich-section-renderer.ytd-rich-grid-renderer {
+            display: none;
+        }
+    }
+}

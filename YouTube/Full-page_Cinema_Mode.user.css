@@ -1,0 +1,403 @@
+/* ==UserStyle==
+
+@name           Full-page Cinema Mode [YouTube]
+@description    Expands the video player further while in Cinema mode
+@namespace      https://userstyles.world/user/KryoBit
+@version        1.4.2
+@author         KryoBit
+@license        MIT
+
+@preprocessor stylus
+
+@var checkbox searchbar                 "⦿ Search Bar" 1
+@var select sb_visibility               "└⟶ Visibility" ['always:Always','hover:Only on Hover*', 'webpage:When cursor is on webpage', 'hide:Hidden']
+@var checkbox s_searchbar               "└⟶ Show Search Bar while scrolling" 1
+@var select transitiontype              "└⟶ Transition Type" ['Slide*', 'Fade', 'Both:Slide + Fade']
+@var range transitionperiod             "└⟶ Transition Period" [0.25, 0, 1, 0.01, 's']
+@var checkbox streamchat                "⦿ Stream Chat" 1
+@var number chatwidth                   "└⟶ Chat width (px)" [402, 'px']
+@var checkbox squarechat                "└⟶ Square corners" 1
+@var checkbox scrollbars                "⦿ Scrollbars" 1
+@var select webscrollwidth              "└⟶ Webpage Scrollbar width" ['Auto', 'Thin*', 'None']
+@var select chatscrollwidth             "└⟶ Chat Scrollbar width" ['Auto', 'Thin*', 'None']
+@var checkbox w_scrollbar               "└⟶ Show Webpage Scrollbar only while scrolling" 1
+@var checkbox c_scrollbar               "└⟶ Show Chat Scrollbar only while scrolling" 1
+
+==/UserStyle== */
+
+@-moz-document url-prefix("https://www.youtube.com/watch"),
+url-prefix("https://www.youtube.com/live_chat"),
+regexp("^(?:.+[\.\/])?youtube\.com(?:[\/\#\?\&].+)?[\/\#\?]live$") {
+
+    /* Expand Video Player */
+    ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy {
+        max-height: 100vh;
+        height: 100vh;
+    }
+
+    ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) #page-manager.ytd-app {
+        margin-top: 0px;
+    }
+
+    /* Search Bar */
+    if searchbar {
+        if sb_visibility=="always" {
+            ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy {
+                height: calc(100vh - var(--ytd-masthead-height-accounting-for-hidden)) !important;
+            }
+
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) #page-manager.ytd-app {
+                margin-top: var(--ytd-masthead-height-accounting-for-hidden) !important;
+            }
+        }
+
+        if sb_visibility=="hover" {
+            ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat.ytd-watch-flexy {
+                top: var(--ChatTop, 0px);
+                transition: transitionperiod ease-in-out;
+                transition-delay: 100ms;
+            }
+
+            @keyframes chatpos {
+                from {
+                    z-index: 2019;
+                }
+                to {
+                    z-index: 2021;
+                }
+            }
+
+            ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat.ytd-watch-flexy:hover {
+                animation: chatpos;
+                animation-delay: transitionperiod;
+                animation-fill-mode: both;
+            }
+
+            ytd-app:has(ytd-watch-flexy[fixed-panels][theater]:not([fullscreen])):has(tp-yt-iron-dropdown.ytd-popup-container:not([style*="display: none;"])) #chat.ytd-watch-flexy,
+            ytd-app:has(ytd-watch-flexy[fixed-panels][theater]:not([fullscreen])):has(.gstl_50.sbdd_a:not([style*="display: none;"])) #chat.ytd-watch-flexy,
+            ytd-app:has(ytd-watch-flexy[fixed-panels][theater]:not([fullscreen])):has(.ytSearchboxComponentSuggestionsContainerDark.ytSearchboxComponentSuggestionsContainer:not([hidden])) #chat.ytd-watch-flexy {
+                z-index: 2019 !important;
+            }
+
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(tp-yt-iron-dropdown.ytd-popup-container:not([style*="display: none;"])) ytd-masthead,
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(.gstl_50.sbdd_a:not([style*="display: none;"])) ytd-masthead,
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(.ytSearchboxComponentSuggestionsContainerDark.ytSearchboxComponentSuggestionsContainer:not([hidden])) ytd-masthead {
+                transform: translateY(0%);
+                opacity: 1;
+                transition: 0ms;
+            }
+
+            if transitiontype=="Slide" {
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) ytd-masthead {
+                    transform: translateY(var(--mastheadpos, -100%));
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) #masthead-container:hover ytd-masthead {
+                    transform: translateY(0%);
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+            }
+
+            if transitiontype=="Fade" {
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) ytd-masthead {
+                    opacity: var(--mastheadopacity, 0);
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) #masthead-container:hover ytd-masthead {
+                    opacity: 1;
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+            }
+
+            if transitiontype=="Both" {
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) ytd-masthead {
+                    transform: translateY(var(--mastheadpos, -100%));
+                    opacity: var(--mastheadopacity, 0);
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) #masthead-container:hover ytd-masthead {
+                    transform: translateY(0%);
+                    opacity: 1;
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+            }
+        }
+
+        if sb_visibility=="webpage" {
+            ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat.ytd-watch-flexy {
+                top: 0px;
+                transition: transitionperiod ease-in-out;
+                transition-delay: 100ms;
+            }
+
+            ytd-app:has(ytd-watch-flexy[fixed-panels][theater]:not([fullscreen])):hover #chat.ytd-watch-flexy {
+                top: var(--ytd-masthead-height-accounting-for-hidden);
+                transition: transitionperiod ease-in-out;
+                transition-delay: 100ms;
+            }
+
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(tp-yt-iron-dropdown.ytd-popup-container:not([style*="display: none;"])) ytd-masthead,
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(.gstl_50.sbdd_a:not([style*="display: none;"])) ytd-masthead,
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(.ytSearchboxComponentSuggestionsContainerDark.ytSearchboxComponentSuggestionsContainer:not([hidden])) ytd-masthead {
+                transform: translateY(0%);
+                opacity: 1;
+                transition: 0ms;
+            }
+
+            if transitiontype=="Slide" {
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) ytd-masthead {
+                    transform: translateY(var(--mastheadpos, -100%));
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):hover ytd-masthead {
+                    transform: translateY(0%);
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+            }
+
+            if transitiontype=="Fade" {
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) ytd-masthead {
+                    opacity: var(--mastheadopacity, 0);
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):hover ytd-masthead {
+                    opacity: 1;
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+            }
+
+            if transitiontype=="Both" {
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) ytd-masthead {
+                    transform: translateY(var(--mastheadpos, -100%));
+                    opacity: var(--mastheadopacity, 0);
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+
+                ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):hover ytd-masthead {
+                    transform: translateY(0%);
+                    opacity: 1;
+                    transition: transitionperiod ease-in-out;
+                    transition-delay: 100ms;
+                }
+            }
+        }
+
+        if sb_visibility=="hide" {
+            ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat.ytd-watch-flexy {
+                top: var(--ChatTop, 0px);
+                transition: transitionperiod ease-in-out;
+                transition-delay: 100ms;
+            }
+
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) #masthead-container.ytd-app {
+                display: none !important;
+            }
+        }
+    }
+    else {
+        ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat.ytd-watch-flexy {
+            top: var(--ChatTop, 0px);
+            transition: transitionperiod ease-in-out;
+            transition-delay: 100ms;
+        }
+
+        ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])) #masthead-container.ytd-app {
+            display: none !important;
+        }
+    }
+
+    /* Stream Chat Settings */
+    if streamchat {
+        ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #columns.ytd-watch-flexy {
+            padding-right: 0px !important;
+        }
+    }
+    else {
+        ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat.ytd-watch-flexy,
+        ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat-container.ytd-watch-flexy,
+        ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #panels-full-bleed-container.ytd-watch-flexy {
+            display: none !important;
+        }
+
+        ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #columns.ytd-watch-flexy {
+            padding-right: 0% !important;
+        }
+    }
+
+    if squarechat {
+        ytd-live-chat-frame[theater-watch-while][rounded-container] {
+            border-radius: 0px !important;
+        }
+    }
+
+    ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat.ytd-watch-flexy,
+    ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #chat-container.ytd-watch-flexy,
+    ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) #panels-full-bleed-container.ytd-watch-flexy {
+        width: chatwidth !important;
+        max-width: 100% !important;
+    }
+
+    yt-live-chat-item-list-renderer[allow-scroll] #item-scroller.yt-live-chat-item-list-renderer {
+        scrollbar-width: chatscrollwidth;
+    }
+
+    yt-live-chat-app {
+        min-width: 0% !important;
+    }
+
+    /* Scrollbars */
+    if scrollbars {
+        html:has(ytd-watch-flexy[theater]:not([fullscreen])) {
+            scrollbar-width: webscrollwidth;
+        }
+    }
+    else {
+        html:has(ytd-watch-flexy[theater]:not([fullscreen])) {
+            scrollbar-width: none !important;
+        }
+
+        yt-live-chat-item-list-renderer[allow-scroll] #item-scroller.yt-live-chat-item-list-renderer {
+            scrollbar-width: none !important;
+        }
+    }
+
+    /* Scrolling animations */
+    if s_searchbar {
+        @supports (animation-timeline: scroll(root)) {
+            @keyframes search_bar {
+                from {
+                    --mastheadpos: -100%;
+                    --mastheadopacity: 0;
+                }
+                to {
+                    --mastheadpos: 0%;
+                    --mastheadopacity: 1;
+                }
+            }
+
+            body:has(ytd-watch-flexy[theater]:not([fullscreen])) {
+                animation: search_bar;
+                animation-timeline: scroll(root);
+                animation-range: 100vh 100vh;
+                animation-fill-mode: both;
+            }
+
+            @keyframes topchat {
+                from {
+                    --ChatTop: 0px;
+                }
+                to {
+                    --ChatTop: var(--ytd-masthead-height-accounting-for-hidden);
+                }
+            }
+
+            ytd-watch-flexy[fixed-panels][theater]:not([fullscreen]) {
+                animation: topchat;
+                animation-timeline: scroll(root);
+                animation-range: 100vh 100vh;
+                animation-fill-mode: both;
+            }
+        }
+
+        @supports not (animation-timeline: scroll(root)) {
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(#columns.ytd-watch-flexy:hover) ytd-masthead {
+                transform: translateY(0%);
+                opacity: 1;
+                transition: transitionperiod ease-in-out;
+                transition-delay: 100ms;
+            }
+            
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(#chat.ytd-watch-flexy:hover):has(tp-yt-iron-dropdown.ytd-popup-container:not([style*="display: none;"])) ytd-masthead,
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(#chat.ytd-watch-flexy:hover):has(.gstl_50.sbdd_a:not([style*="display: none;"])) ytd-masthead,
+            ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(#chat.ytd-watch-flexy:hover):has(.ytSearchboxComponentSuggestionsContainerDark.ytSearchboxComponentSuggestionsContainer:not([hidden])) ytd-masthead {
+                transform: translateY(0%) !important;
+                opacity: 1 !important;
+                transition: 0ms;
+                transition-delay: 0ms;
+            }
+
+            if sb_visibility=="hover" {
+                if transitiontype=="Slide" {
+                    ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(#chat.ytd-watch-flexy:hover) ytd-masthead {
+                        transform: translateY(-100%) !important;
+                        transition: transitionperiod ease-in-out;
+                        transition-delay: 100ms;
+                    }
+                }
+
+                if transitiontype=="Fade" {
+                    ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(#chat.ytd-watch-flexy:hover) ytd-masthead {
+                        opacity: 0 !important;
+                        transition: transitionperiod ease-in-out;
+                        transition-delay: 100ms;
+                    }
+                }
+
+                if transitiontype=="Both" {
+                    ytd-app:has(ytd-watch-flexy[theater]:not([fullscreen])):has(#chat.ytd-watch-flexy:hover) ytd-masthead {
+                        transform: translateY(-100%) !important;
+                        opacity: 0 !important;
+                        transition: transitionperiod ease-in-out;
+                        transition-delay: 100ms;
+                    }
+                }
+            }
+        }
+    }
+
+    if w_scrollbar {
+        @supports (animation-timeline: scroll(root)) {
+            @keyframes w_scroll {
+                from {
+                    scrollbar-width: none;
+                }
+                to {
+                    scrollbar-width: webscrollwidth;
+                }
+            }
+
+            html:has(ytd-watch-flexy[theater]:not([fullscreen])) {
+                animation: w_scroll;
+                animation-timeline: scroll(root);
+                animation-range: 1vh 1vh;
+                animation-fill-mode: both;
+            }
+        }
+    }
+
+    if c_scrollbar {
+        @supports (animation-timeline: scroll()) {
+            @keyframes c_scroll {
+                from {
+                    scrollbar-width: none;
+                }
+                to {
+                    scrollbar-width: chatscrollwidth;
+                }
+            }
+
+            yt-live-chat-item-list-renderer[allow-scroll] #item-scroller.yt-live-chat-item-list-renderer {
+                animation: c_scroll;
+                animation-timeline: scroll();
+                animation-range: 1vh 1vh;
+                animation-fill-mode: both;
+            }
+        }
+    }
+}

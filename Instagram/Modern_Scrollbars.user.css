@@ -1,0 +1,69 @@
+/* ==UserStyle==
+
+@name           Modern Scrollbars [Instagram]
+@description    Replaces the ancient scrollbars on Instagram with modern ones
+@namespace      https://userstyles.world/user/KryoBit
+@version        1.2.0
+@author         KryoBit
+@license        MIT
+
+@preprocessor stylus
+
+@var checkbox modernscrollbar       "⦿ Modern Scrollbar" 1
+@var range scrollbarwidth           "└⟶ Width" [7, 0, 12, 1, 'px']
+@var range scrollbarradius          "└⟶ Roundness" [10, 0, 12, 1, 'px']
+@var color scrollcolor              "└⟶ Color" #999
+@var color scrollhovercolor         "└⟶ Hover Color" #777
+@var color scrollactivecolor        "└⟶ Active Color" #555
+@var checkbox notes                 "Hide scrollbar on notes" 1
+
+==/UserStyle== */
+
+@-moz-document domain("www.instagram.com") {
+
+    if modernscrollbar {
+        ::-webkit-scrollbar-button {
+            display: none !important;
+        }
+
+        ::-webkit-scrollbar,
+        ::-webkit-scrollbar-corner {
+            background: #0000 !important;
+            width: scrollbarwidth;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: scrollcolor !important;
+            width: scrollbarwidth !important;
+            border-radius: scrollbarradius !important;
+        }
+
+        ::-webkit-scrollbar-thumb:not(:active):hover {
+            background: scrollhovercolor !important;
+        }
+
+        ::-webkit-scrollbar-thumb:active,
+        ::-webkit-scrollbar-thumb:hover:active {
+            background: scrollactivecolor !important;
+        }
+    }
+    else {
+        ::-webkit-scrollbar,
+        ::-webkit-scrollbar-corner,
+        ::-webkit-scrollbar-thumb {
+            width: 0px !important;
+        }
+    }
+
+    if notes {
+        .x6s0dn4.x78zum5.xw2csxc.x1odjw0f.x15kz4h8 {
+            scrollbar-width: none !important;
+        }
+    }
+}
+
+@-moz-document url-prefix("https://www.instagram.com/direct/") {
+    html {
+        scrollbar-width: none !important;
+    }
+}
